@@ -1,0 +1,9 @@
+---
+- name: centos | installing haproxy and socat
+  yum: name={{ item }} state=latest
+  with_items:
+    - haproxy
+    - socat
+
+- name: centos | ensuring haproxy is enabled
+  service: name=haproxy enabled=yes
