@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Larry Smith Jr.
-  description: Installs haproxy role
+  description: Installs haproxy role (GlusterFS support included)
   #company: your company (optional)
   # Some suggested licenses:
   # - BSD (default)
