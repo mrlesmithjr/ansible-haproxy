@@ -19,6 +19,7 @@ haproxy_admin_password: admin  #defines password for admin user to login to admi
 haproxy_admin_port: 9090  #defines http port to listen on for admin page
 haproxy_admin_user: admin  #defines admin user to login to admin page
 haproxy_backup_dir: /etc/haproxy.backup  #defines location to backup haproxy to when using with GlusterFS
+haproxy_home: /etc/haproxy  #defines haproxy default location
 sync_haproxy: false  #this is only needed when using GlusterFS
 ````
 
