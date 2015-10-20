@@ -1,13 +1,17 @@
 ---
 # tasks file for ansible-haproxy
 - include: debian.yml
-  tags: [haproxy]
+  tags:
+    - haproxy
   when: ansible_os_family == "Debian"
 
 - include: centos.yml
-  tags: [haproxy]
+  tags:
+    - haproxy
   when: ansible_os_family == "RedHat"
 
 - include: config_haproxy.yml
-  tags: [haproxy]
-  when: config_haproxy
+  tags:
+    - config_haproxy
+    - haproxy
+  when: config_haproxy is defined and config_haproxy

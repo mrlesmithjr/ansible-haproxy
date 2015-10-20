@@ -1,4 +1,13 @@
 ---
+- name: config_haproxy | checking for haproxy rsyslog config
+  stat: path=/etc/rsyslog.d/49-haproxy.conf
+  register: rsyslog_haproxy_conf
+
+- name: config_haproxy | configuring haproxy rsyslog config
+  template: src=etc/rsyslog.d/49-haproxy.conf.j2 dest=/etc/rsyslog.d/49-haproxy.conf owner=root group=root mode=0644
+  notify: restart rsyslog
+  when: rsyslog_haproxy_conf.stat.exists
+
 - name: config_haproxy | configuring haproxy
   template: src=etc/haproxy/haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg mode=0644 owner=root group=root backup=yes
   run_once: true

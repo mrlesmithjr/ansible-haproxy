@@ -1,10 +1,17 @@
 # {{ ansible_managed }}
-
+#
 global
-# log logstash    local0 #Change logstash to your naming
+{% if (enable_haproxy_remote_syslog is defined and not enable_haproxy_remote_syslog) or enable_haproxy_remote_syslog is not defined %}
   log /dev/log    local0
   log /dev/log    local1 notice
-#	log-send-hostname
+{% endif %}
+{% if (enable_haproxy_remote_syslog is defined and enable_haproxy_remote_syslog) and syslog_servers is defined %}
+# Remote syslog servers
+{%   for item in syslog_servers %}
+  log {{ item.name }}:{{ item.port }} local0
+{%   endfor %}
+  log-send-hostname
+{% endif %}
 	chroot /var/lib/haproxy
 	user haproxy
 	group haproxy

@@ -12,15 +12,23 @@ Role Variables
 --------------
 
 ````
+---
+# defaults file for ansible-haproxy
 config_haproxy: false #only set to true to actually configure a base HAProxy config which is already installed by default
 debian_haproxy_repo: ppa:vbernat/haproxy-1.5
 enable_haproxy_admin_page: true
+enable_haproxy_remote_syslog: false  #defines if logs should be sent to remote syslog server
 haproxy_admin_password: admin  #defines password for admin user to login to admin page
 haproxy_admin_port: 9090  #defines http port to listen on for admin page
 haproxy_admin_user: admin  #defines admin user to login to admin page
 haproxy_backup_dir: /etc/haproxy.backup  #defines location to backup haproxy to when using with GlusterFS
 haproxy_home: /etc/haproxy  #defines haproxy default location
+pri_domain_name: example.org
 sync_haproxy: false  #this is only needed when using GlusterFS
+syslog_servers:
+  - name: 'logstash.{{ pri_domain_name }}'
+    proto: tcp
+    port: 514
 ````
 
 Dependencies
