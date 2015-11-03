@@ -10,7 +10,7 @@ global
 {%   for item in syslog_servers %}
   log {{ item.name }}:{{ item.port }} local0
 {%   endfor %}
-  log-send-hostname
+  #log-send-hostname
 {% endif %}
 	chroot /var/lib/haproxy
 	user haproxy
