@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y git
 RUN mkdir -p /opt/ansible-playbooks/roles
 
 #Clone GitHub Repo
-RUN git clone --branch=dev https://github.com/mrlesmithjr/ansible-haproxy.git /opt/ansible-playbooks/roles/ansible-haproxy
+RUN git clone https://github.com/mrlesmithjr/ansible-haproxy.git /opt/ansible-playbooks/roles/ansible-haproxy
 
 #Copy Ansible playbooks
 COPY playbook.yml /opt/ansible-playbooks/
