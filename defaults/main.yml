@@ -10,7 +10,10 @@ haproxy_admin_user: admin  #defines admin user to login to admin page
 haproxy_backup_dir: /etc/haproxy.backup  #defines location to backup haproxy to when using with GlusterFS
 haproxy_docker_install: false  #defines if haproxy is being installed in Docker
 haproxy_home: /etc/haproxy  #defines haproxy default location
+haproxy_mnt: ''  #define if using GlusterFS
 pri_domain_name: example.org
+primary_gfs_server: ''  #define if using GlusterFS
+secondary_gfs_server: ''  #define if using GlusterFS
 sync_haproxy: false  #this is only needed when using GlusterFS
 syslog_servers:
   - name: 'logstash.{{ pri_domain_name }}'

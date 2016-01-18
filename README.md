@@ -6,7 +6,7 @@ Installs haproxy http://www.haproxy.org/
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None...unless using GlusterFS
 
 Role Variables
 --------------
@@ -22,8 +22,12 @@ haproxy_admin_password: admin  #defines password for admin user to login to admi
 haproxy_admin_port: 9090  #defines http port to listen on for admin page
 haproxy_admin_user: admin  #defines admin user to login to admin page
 haproxy_backup_dir: /etc/haproxy.backup  #defines location to backup haproxy to when using with GlusterFS
+haproxy_docker_install: false  #defines if haproxy is being installed in Docker
 haproxy_home: /etc/haproxy  #defines haproxy default location
+haproxy_mnt: ''  #define if using GlusterFS
 pri_domain_name: example.org
+primary_gfs_server: ''  #define if using GlusterFS
+secondary_gfs_server: ''  #define if using GlusterFS
 sync_haproxy: false  #this is only needed when using GlusterFS
 syslog_servers:
   - name: 'logstash.{{ pri_domain_name }}'
@@ -34,16 +38,31 @@ syslog_servers:
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None...unless using GlusterFS
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: mrlesmithjr.haproxy }
+#### GitHub
+````
+- hosts: all
+  remote_user: remote
+  become: true
+  vars:
+  roles:
+    - role: ansible-haproxy
+  tasks:
+````
+#### Galaxy
+````
+- hosts: all
+  remote_user: remote
+  become: true
+  vars:
+  roles:
+    - role: mrlesmithjr.haproxy
+  tasks:
+````
 
 License
 -------
