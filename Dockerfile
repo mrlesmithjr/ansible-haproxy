@@ -1,29 +1,39 @@
-#Builds Ubuntu HAProxy image
+FROM ubuntu:14.04
 
-FROM mrlesmithjr/ubuntu-ansible
+MAINTAINER Larry Smith Jr. <mrlesmithjr@gmail.com>
 
-MAINTAINER mrlesmithjr@gmail.com
+#Update apt-cache
+RUN apt-get update
 
-#Install packages
-RUN apt-get update && apt-get install -y git
+#Install pre-reqs for Ansible
+RUN apt-get -y install curl git software-properties-common
 
-#Create Ansible Folder
-RUN mkdir -p /opt/ansible-playbooks/roles
+#Adding Ansible ppa
+RUN apt-add-repository ppa:ansible/ansible
 
-#Clone GitHub Repo
-RUN git clone https://github.com/mrlesmithjr/ansible-haproxy.git /opt/ansible-playbooks/roles/ansible-haproxy
+#Update apt-cache
+RUN apt-get update
 
-#Copy Ansible playbooks
-COPY playbook.yml /opt/ansible-playbooks/
+#Install Ansible
+RUN apt-get -y install ansible
 
-#Run Ansible playbook to install dnsmasq
-RUN ansible-playbook -i "localhost," -c local /opt/ansible-playbooks/playbook.yml
+# Create Ansible Folder
+RUN mkdir -p /opt/ansible_tasks
 
-# Cleanup
-RUN apt-get clean -y && \
-    apt-get autoremove -y
+# Copy Ansible playbooks
+COPY playbook.yml requirements.yml /opt/ansible_tasks/
 
-# Cleanup
+#Install Ansible role(s)
+RUN ansible-galaxy install -r /opt/ansible_tasks/requirements.yml
+
+#Run Ansible playbook
+RUN ansible-playbook -c local /opt/ansible_tasks/playbook.yml
+
+#Clean-up packages
+RUN apt-get -y clean && \
+    apt-get -y autoremove
+
+#Clean-up temp files
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Expose ports
