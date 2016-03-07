@@ -88,7 +88,8 @@ galaxy_info:
   #  - saucy
     - trusty
   #  - utopic
-  #  - vivid
+    - vivid
+    - wily
   #- name: SLES
   #  versions:
   #  - all
@@ -102,11 +103,11 @@ galaxy_info:
   #  versions:
   #  - all
   #  - any
-  #- name: Debian
-  #  versions:
+  - name: Debian
+    versions:
   #  - all
   #  - etch
-  #  - jessie
+    - jessie
   #  - lenny
   #  - squeeze
   #  - wheezy
