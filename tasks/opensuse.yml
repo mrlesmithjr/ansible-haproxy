@@ -1,0 +1,13 @@
+---
+- name: opensuse | installing haproxy and socat
+  zypper:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - haproxy
+    - socat
+
+- name: opensuse | ensuring haproxy is enabled
+  service:
+    name: haproxy
+    enabled: yes

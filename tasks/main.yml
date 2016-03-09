@@ -10,6 +10,9 @@
     - haproxy
   when: ansible_os_family == "RedHat"
 
+- include: opensuse.yml
+  when: ansible_os_family == "openSUSE Leap"
+
 - include: config_haproxy.yml
   tags:
     - config_haproxy
