@@ -12,6 +12,7 @@
     state: latest
   with_items:
     - haproxy
+    - hatop
     - socat
 
 - name: debian | ensuring haproxy is enabled
