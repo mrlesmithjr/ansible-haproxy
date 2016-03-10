@@ -34,6 +34,7 @@ haproxy_docker_install: false  #defines if haproxy is being installed in Docker
 haproxy_home: /etc/haproxy  #defines haproxy default location
 haproxy_lb_vip: '{{ ansible_default_ipv4.address }}'
 haproxy_mnt: ''  #define if using GlusterFS
+haproxy_socket_file: /var/run/haproxy.sock
 pri_domain_name: example.org
 primary_gfs_server: ''  #define if using GlusterFS
 secondary_gfs_server: ''  #define if using GlusterFS

@@ -22,7 +22,7 @@ global
 {% endif %}
 	maxconn 40000
 	spread-checks 3
-  stats socket /run/haproxy/admin.sock mode 660 level admin
+  stats socket {{ haproxy_socket_file }} mode 660 level admin
   stats timeout 30s
 
   # Default SSL material locations
