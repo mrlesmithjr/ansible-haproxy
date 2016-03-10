@@ -80,9 +80,9 @@ frontend {{ item.frontend_name }}-{{ item.frontend_bind_port }}
 {%       endif %}
     bind {{ item.frontend_bind_address }}:{{ item.frontend_bind_port }}
     default_backend {{ item.backend_name }}-{{ item.backend_servers_bind_port }}
+
 {%     endif %}
 {%   endfor %}
-
 {%   for item in haproxy_configs %}
 {%     if item.enabled %}
 backend {{ item.backend_name }}-{{ item.backend_servers_bind_port }}
@@ -105,6 +105,7 @@ backend {{ item.backend_name }}-{{ item.backend_servers_bind_port }}
     server {{ server }} {{ server }}:{{ item.backend_servers_bind_port }}{% if item.backend_checks %} check{% endif %}
 
 {%       endfor %}
+
 {%     endif %}
 {%   endfor %}
 {% endif %}
