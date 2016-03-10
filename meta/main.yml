@@ -47,8 +47,8 @@ galaxy_info:
   #  versions:
   #  - all
   #  - any
-  - name: opensuse
-    versions:
+  #- name: opensuse
+  #  versions:
   #  - all
   #  - 12.1
   #  - 12.2
