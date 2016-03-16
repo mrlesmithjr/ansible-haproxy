@@ -30,6 +30,7 @@ haproxy_configs:  #defines load balancer configurations to enable/disable
     options:  #Defines options to add to backend group (not the same as default_server_options)
       - httplog
       - httpchk
+#      - httpchk HEAD / HTTP/1.1\r\nHost:localhost  #Works for default NGINX health checks
 haproxy_defaults:  #defines default configurations for default block
   - 'errorfile 400 /etc/haproxy/errors/400.http'
   - 'errorfile 403 /etc/haproxy/errors/403.http'
