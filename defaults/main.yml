@@ -1,7 +1,7 @@
 ---
 # defaults file for ansible-haproxy
 config_haproxy: false #only set to true to actually configure a base HAProxy config which is already installed by default
-debian_haproxy_repo: ppa:vbernat/haproxy-1.5
+debian_haproxy_repo: 'ppa:vbernat/haproxy-1.6'
 enable_haproxy_admin_page: true
 enable_haproxy_remote_syslog: false  #defines if logs should be sent to remote syslog server
 haproxy_admin_password: admin  #defines password for admin user to login to admin page
