@@ -27,4 +27,6 @@
   service:
     name: "haproxy"
     state: "restarted"
-  when: haproxy_reconfigured.changed
+  when: >
+        haproxy_reconfigured['changed'] and
+        not ansible_check_mode

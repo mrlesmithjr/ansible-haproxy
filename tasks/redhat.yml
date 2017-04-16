@@ -23,3 +23,4 @@
   service:
     name: "haproxy"
     enabled: yes
+  when: not ansible_check_mode
