@@ -75,7 +75,7 @@ backend {{ item.backend_name }}-{{ item.backend_servers_bind_port }}
 
 {%       endif %}
 {%       for server in groups[item.backend_servers_group] %}
-    server {{ server }} {{ server }}:{{ item.backend_servers_bind_port }}{% if item.backend_checks %} check{% endif %}
+    server {{ server }} {{ hostvars[server]['ansible_host'] }}:{{ item.backend_servers_bind_port }}{% if item.backend_checks %} check{% endif %}
 
 {%       endfor %}
 
