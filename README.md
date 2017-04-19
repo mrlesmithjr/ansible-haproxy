@@ -3,6 +3,11 @@ Role Name
 
 An [Ansible] role to install/configure [HAProxy]
 
+Build Status
+------------
+
+[![Build Status](https://travis-ci.org/mrlesmithjr/ansible-haproxy.svg?branch=master)](https://travis-ci.org/mrlesmithjr/ansible-haproxy)
+
 Requirements
 ------------
 
