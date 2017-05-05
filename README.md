@@ -30,6 +30,7 @@ Example Playbook
 
 Example `haproxy.cfg` (from default vars):
 ---------------------------------------
+
 ```
 global
     log /dev/log local0
@@ -87,18 +88,18 @@ listen stats
     acl AuthOkay_Admin http_auth_group(STATSUSERS) admin
     stats http-request auth realm stats unless AuthOkay_ReadOnly
 
-frontend http-in-80
-    mode http
-    bind 10.0.2.15:80
-    default_backend web-servers-80
+frontend squid-in-8080
+    mode tcp
+    bind 192.168.250.50:8080
+    default_backend squid-servers-3128
 
-backend web-servers-80
-    mode http
+backend squid-servers-3128
+    mode tcp
     balance roundrobin
-    option httplog
-    option httpchk
+    option tcplog
     default-server maxconn 256 maxqueue 128 weight 100
-    server node1 node1:80 check
+    server 192.168.250.10 192.168.250.10:3128 check
+    server 192.168.250.11 192.168.250.11:3128 check
 ```
 
 License
