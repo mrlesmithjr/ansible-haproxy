@@ -20,6 +20,8 @@ haproxy_configs: []
 #     backend_checks: true
 #     # Defines name of backend-name config
 #     backend_name: 'web-servers'
+#     # Defines the address that backend servers listen on
+#     backend_servers_bind_address: "{{ ansible_default_ipv4['address'] }}"
 #     # Defines the port that backend servers listen on
 #     backend_servers_bind_port: '80'
 #     # Define Ansible inventory group host resides in
