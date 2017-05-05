@@ -6,6 +6,7 @@
       - name: 'squid-3128'
         backend_checks: true
         backend_name: 'squid-servers'
+        backend_servers_bind_address: "{{ ansible_default_ipv4['address'] }}"
         backend_servers_bind_port: '3128'
         backend_servers_group: 'squid_proxy'
         balance: 'roundrobin'
