@@ -74,8 +74,8 @@ backend {{ item['backend_name'] }}-{{ item['backend_servers_bind_port'] }}
     default-server{% for bo in item['default_server_options'] %} {{ bo['name'] }} {{ bo['value'] }}{% endfor %}
 
 {%       endif %}
-{%       for server in groups[item]['backend_servers_group'] %}
-    server {{ server }} {{ hostvars[server]['backend_servers_bind_address'] }}:{{ item['backend_servers_bind_port'] }}{% if item['backend_checks'] %} check{% endif %}
+{%       for server in item['backend_servers'] %}
+    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}{% if item['backend_checks'] %} check{% endif %}
 
 {%       endfor %}
 
