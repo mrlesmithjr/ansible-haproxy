@@ -20,3 +20,11 @@
   when: >
         haproxy_config is defined and
         haproxy_config
+
+- name: Allowing Running HAProxy Instances To Bind To A VIP For Failover
+  sysctl:
+    name: "net.ipv4.ip_nonlocal_bind"
+    value: 1
+    state: "present"
+    reload: yes
+  become: true
