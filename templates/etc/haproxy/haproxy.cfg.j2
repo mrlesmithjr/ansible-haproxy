@@ -1,3 +1,5 @@
+# {{ ansible_managed }}
+
 global
 {% if (haproxy_enable_remote_syslog is defined and not haproxy_enable_remote_syslog) or haproxy_enable_remote_syslog is not defined %}
     log /dev/log local0
@@ -75,8 +77,18 @@ backend {{ item['backend_name'] }}-{{ item['backend_servers_bind_port'] }}
 
 {%       endif %}
 {%       for server in item['backend_servers'] %}
+{%         if (item['backend_backups'] is defined and not item['backend_backups']) or item['backend_backups'] is not defined %}
     server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}{% if item['backend_checks'] %} check{% endif %}
 
+{%         elif item['backend_backups'] %}
+{%           if item['backend_backups_primary'] == server %}
+    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}{% if item['backend_checks'] %} check{% endif %}
+
+{%           elif item['backend_backups_primary'] != server %}
+    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }} backup{% if item['backend_checks'] %} check{% endif %}
+
+{%           endif %}
+{%         endif %}
 {%       endfor %}
 
 {%     endif %}
