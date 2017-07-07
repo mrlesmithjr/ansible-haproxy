@@ -14,8 +14,26 @@ haproxy_admin_user: 'admin'
 haproxy_config: false
 
 # Defines load balancer configurations to enable/disable
+#
+# backend_backups - Defines if all but one host should be a backup(standby) to the primary
+#
+# backend_backups_primary - Defines the host which should be considered the primary
+# when setting backend_backups: true
+#
+# Example of using backups(standby)
+# backend openstack_controllers-3306
+#     balance source
+#     default-server inter 2000 rise 2 fall 5
+#     server controller01 controller01:3306 check
+#     server controller02 controller02:3306 backup check
+#     server controller03 controller03:3306 backup check
+#
+# backend_checks - Defines if host checks should be enabled
+#
 haproxy_configs: []
   # - name: 'squid-3128'
+  #   backend_backups: false
+  #   backend_backups_primary: 'node1'
   #   backend_checks: true
   #   backend_name: 'squid-servers'
   #   backend_servers_bind_port: '3128'
