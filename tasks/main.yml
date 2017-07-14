@@ -11,12 +11,29 @@
   when: ansible_os_family == "RedHat"
 
 - include: opensuse.yml
+  tags:
+    - haproxy
   when: ansible_os_family == "openSUSE Leap"
+
+- debug: var=haproxy_load_balancer_ssl
+  tags:
+    - haproxy
+
+- include: ssl.yml
+  tags:
+    - haproxy
+    - haproxy_config
+    - haproxy_ssl
+  when: >
+        (haproxy_load_balancer_ssl is defined and
+          haproxy_load_balancer_ssl != []) and
+        haproxy_load_balancer_ssl['enabled']
 
 - include: config_haproxy.yml
   tags:
-    - config_haproxy
     - haproxy
+    - haproxy_config
+    - haproxy_ssl
   when: >
         haproxy_config is defined and
         haproxy_config
@@ -28,3 +45,5 @@
     state: "present"
     reload: yes
   become: true
+  tags:
+    - haproxy

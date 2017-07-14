@@ -1,6 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [ansible-haproxy](#ansible-haproxy)
   - [Build Status](#build-status)
@@ -36,7 +36,7 @@ None
 haproxy_admin_password: 'admin'
 
 # Defines http port to listen on for admin page
-haproxy_admin_port: '9090'
+haproxy_admin_port: 9090
 
 # Defines admin user to login to admin page
 haproxy_admin_user: 'admin'
@@ -67,22 +67,24 @@ haproxy_configs: []
   #   backend_backups_primary: 'node1'
   #   backend_checks: true
   #   backend_name: 'squid-servers'
-  #   backend_servers_bind_port: '3128'
+  #   backend_servers_bind_port: 3128
   #   backend_servers:
-  #     - '192.168.250.10'
-  #     - '192.168.250.11'
+  #     - 192.168.250.10
+  #     - 192.168.250.11
   #   balance: 'roundrobin'
   #   default_server_options:
   #     - name: 'maxconn'
-  #       value: '256'
+  #       value: 256
   #     - name: 'maxqueue'
-  #       value: '128'
+  #       value: 128
   #     - name: 'weight'
-  #       value: '100'
+  #       value: 100
   #   enabled: true
   #   frontend_bind_address: '{{ haproxy_lb_vip }}'
-  #   frontend_bind_port: '8080'
+  #   frontend_bind_port: 8080
   #   frontend_name: 'squid-in'
+  #   frontend_ssl: false
+  #   frontend_ssl_cert: "{{ haproxy_load_balancer_ssl['bundled_cert'] }}"
   #   mode: 'tcp'
   #   options:
   #     - 'tcplog'
@@ -112,6 +114,7 @@ haproxy_defaults:
   - 'timeout server 50000'
 
 haproxy_debian_repo: 'ppa:vbernat/haproxy-{{ haproxy_version }}'
+
 haproxy_enable_admin_page: true
 
 # Defines if logs should be sent to remote syslog server
@@ -131,12 +134,44 @@ haproxy_global:
 haproxy_home: '/etc/haproxy'
 
 haproxy_lb_vip: '{{ ansible_default_ipv4.address }}'
+
 haproxy_pri_domain_name: 'example.org'
+
 haproxy_socket_file: '/var/run/haproxy.sock'
-haproxy_syslog_servers:
-  - name: 'logstash.{{ haproxy_pri_domain_name }}'
-    proto: 'tcp'
-    port: '514'
+
+haproxy_syslog_servers: []
+  # - name: 'logstash.{{ haproxy_pri_domain_name }}'
+  #   proto: 'tcp'
+  #   port: 514
+
+# Defines if using a highly available setup. i.e. multiple haproxy load balancers
+haproxy_load_balancer_ha: false
+
+# Defines the prefix path/file for SSL cert(s) when using HA
+## We do this in order to generate the keys on the primary and sync the keys to
+## all other nodes in the HA setup.
+haproxy_load_balancer_ha_key_file_prefix: '/etc/ssl/{{ haproxy_load_balancer_ha_primary }}'
+
+# Defines the primary host when in HA mode
+haproxy_load_balancer_ha_primary: 'node0'
+
+# Defines SSL cert(s) info
+haproxy_load_balancer_ssl: []
+  # bundled_cert: '/etc/ssl/{{ inventory_hostname }}-bundle.pem'
+  # csr_key_file: '/etc/ssl/{{ inventory_hostname }}-csr.pem'
+  # enabled: false
+  # generate_keys: false
+  # private_key_file: '/etc/ssl/private/{{ inventory_hostname }}-key.pem'
+  # private_key_size: 4096
+  # private_key_type: 'RSA'
+  # protocols:
+  #   - 'TLSv1'
+  #   - 'TLSv1.1'
+  #   - 'TLSv1.2'
+  # public_key_file: '/etc/ssl/public/{{ inventory_hostname }}-cert.pem'
+  # public_key_valid_days: 1825
+  # regenerate_keys: false
+
 haproxy_version: '1.7'
 ```
 
@@ -151,6 +186,8 @@ None
 ## Example `haproxy.cfg` (from default vars):
 
 ```bash
+# Ansible managed
+
 global
     log /dev/log local0
     log /dev/log local1 notice
@@ -207,18 +244,18 @@ listen stats
     acl AuthOkay_Admin http_auth_group(STATSUSERS) admin
     stats http-request auth realm stats unless AuthOkay_ReadOnly
 
-frontend squid-in-8080
-    mode tcp
-    bind 192.168.250.50:8080
-    default_backend squid-servers-3128
+frontend web_servers-in-443
+    mode http
+    bind 192.168.250.200:443 ssl crt /etc/ssl/node1-bundle.pem
+    default_backend web_servers-80
 
-backend squid-servers-3128
-    mode tcp
+backend web_servers-80
+    mode http
     balance roundrobin
-    option tcplog
+    option httplog
     default-server maxconn 256 maxqueue 128 weight 100
-    server 192.168.250.10 192.168.250.10:3128 check
-    server 192.168.250.11 192.168.250.11:3128 check
+    server node2 node2:80 check
+    server node3 node3:80 check
 ```
 
 ## License
