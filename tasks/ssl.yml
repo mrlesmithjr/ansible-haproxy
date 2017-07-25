@@ -6,6 +6,7 @@
   become: true
   with_items:
     - 'pyOpenSSL'
+  when: haproxy_load_balancer_ssl['generate_keys']
 
 - name: ssl | Ensuring SSL Keys Folders Exist
   file:
