@@ -68,6 +68,9 @@ backend {{ item['backend_name'] }}-{{ item['backend_servers_bind_port'] }}
 {%       if item['balance'] is defined %}
     balance {{ item['balance'] }}
 {%       endif %}
+{%       if item['stickiness'] is defined and item['stickiness'] %}
+    cookie HA_BACKEND_ID insert indirect nocache
+{%       endif %}
 {%       if item['options'] is defined %}
 {%         for option in item['options'] %}
     option {{ option }}
@@ -79,14 +82,20 @@ backend {{ item['backend_name'] }}-{{ item['backend_servers_bind_port'] }}
 {%       endif %}
 {%       for server in item['backend_servers'] %}
 {%         if (item['backend_backups'] is defined and not item['backend_backups']) or item['backend_backups'] is not defined %}
-    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}{% if item['backend_checks'] %} check{% endif %}
+    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}
+    {%- if item['backend_checks'] %} check{% endif %}
+    {%- if item['stickiness'] is defined and item['stickiness'] %} cookie {{ loop.index }}{% endif %}
 
 {%         elif item['backend_backups'] %}
 {%           if item['backend_backups_primary'] == server %}
-    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}{% if item['backend_checks'] %} check{% endif %}
+    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}
+    {%- if item['backend_checks'] %} check{% endif %}
+    {%- if item['stickiness'] is defined and item['stickiness'] %} cookie {{ loop.index }}{% endif %}
 
 {%           elif item['backend_backups_primary'] != server %}
-    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }} backup{% if item['backend_checks'] %} check{% endif %}
+    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }} backup
+    {%- if item['backend_checks'] %} check{% endif %}
+    {%- if item['stickiness'] is defined and item['stickiness'] %} cookie {{ loop.index }}{% endif %}
 
 {%           endif %}
 {%         endif %}

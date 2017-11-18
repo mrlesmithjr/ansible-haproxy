@@ -30,6 +30,8 @@ haproxy_config: false
 #
 # backend_checks - Defines if host checks should be enabled
 #
+# stickiness - Defines if session cookies should be used for sticky sessions
+#
 haproxy_configs: []
   # - name: 'squid-3128'
   #   backend_backups: false
@@ -58,6 +60,7 @@ haproxy_configs: []
   #   options:
   #     - 'tcplog'
   #     # - 'httpchk'
+  #   stickiness: true
 
 # Defines default configurations for default block
 haproxy_defaults:
