@@ -32,6 +32,7 @@ haproxy_config: false
 #
 # stickiness - Defines if session cookies should be used for sticky sessions
 #
+# tcp_checks - Define any tcp-check options you desire
 haproxy_configs: []
   # - name: 'squid-3128'
   #   backend_backups: false
@@ -61,6 +62,9 @@ haproxy_configs: []
   #     - 'tcplog'
   #     # - 'httpchk'
   #   stickiness: true
+  #   tcp_checks:
+  #     - connect
+  #     - send PING\r\n
 
 # Defines default configurations for default block
 haproxy_defaults:
