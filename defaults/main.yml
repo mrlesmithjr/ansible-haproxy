@@ -57,7 +57,7 @@ haproxy_configs:
   #   frontend_bind_port: 8080
   #   frontend_name: squid-in
   #   frontend_ssl: false
-  #   frontend_ssl_cert: "{{ haproxy_load_balancer_ssl['bundled_cert'] }}"
+  #   frontend_ssl_cert: "{{ haproxy_ssl['bundled_cert'] }}"
   #   mode: tcp
   #   options:
   #     - tcplog
@@ -107,6 +107,17 @@ haproxy_global:
   - stats timeout 30s
   - user haproxy
 
+# Defines if using a highly available setup. i.e. multiple haproxy load balancers
+haproxy_ha: false
+
+# Defines the prefix path/file for SSL cert(s) when using HA
+## We do this in order to generate the keys on the primary and sync the keys to
+## all other nodes in the HA setup.
+haproxy_ha_key_file_prefix: "/etc/ssl/{{ haproxy_ha_primary }}"
+
+# Defines the primary host when in HA mode
+haproxy_ha_primary: node0
+
 # Defines haproxy default location
 haproxy_home: /etc/haproxy
 
@@ -116,32 +127,8 @@ haproxy_pri_domain_name: example.org
 
 haproxy_socket_file: /var/run/haproxy.sock
 
-haproxy_syslog_servers:
-  []
-  # - name: "logstash.{{ haproxy_pri_domain_name }}"
-  #   proto: tcp
-  #   port: 514
-
-# Define any sysctl settings to apply
-haproxy_sysctl_settings:
-  []
-  # - name: net.ipv4.ip_nonlocal_bind
-  #   value: "1"
-  #   state: present
-
-# Defines if using a highly available setup. i.e. multiple haproxy load balancers
-haproxy_load_balancer_ha: false
-
-# Defines the prefix path/file for SSL cert(s) when using HA
-## We do this in order to generate the keys on the primary and sync the keys to
-## all other nodes in the HA setup.
-haproxy_load_balancer_ha_key_file_prefix: "/etc/ssl/{{ haproxy_load_balancer_ha_primary }}"
-
-# Defines the primary host when in HA mode
-haproxy_load_balancer_ha_primary: node0
-
 # Defines SSL cert(s) info
-haproxy_load_balancer_ssl:
+haproxy_ssl:
   []
   # bundled_cert: "/etc/ssl/{{ inventory_hostname }}-bundle.pem"
   # csr_key_file: "/etc/ssl/{{ inventory_hostname }}-csr.pem"
@@ -157,5 +144,19 @@ haproxy_load_balancer_ssl:
   # public_key_file: "/etc/ssl/public/{{ inventory_hostname }}-cert.pem"
   # public_key_valid_days: 1825
   # regenerate_keys: false
+
+# Define any sysctl settings to apply
+haproxy_sysctl_settings:
+  []
+  # - name: net.ipv4.ip_nonlocal_bind
+  #   value: "1"
+  #   state: present
+
+# Define any syslog servers
+haproxy_syslog_servers:
+  []
+  # - name: "logstash.{{ haproxy_pri_domain_name }}"
+  #   proto: tcp
+  #   port: 514
 
 haproxy_version: 2.0

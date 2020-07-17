@@ -13,13 +13,13 @@
 
 - name: Debug HAProxy SSL
   debug:
-    var: haproxy_load_balancer_ssl
+    var: haproxy_ssl
 
 - include_tasks: ssl.yml
   when:
-    - haproxy_load_balancer_ssl is defined
-    - haproxy_load_balancer_ssl != []
-    - haproxy_load_balancer_ssl.enabled|bool
+    - haproxy_ssl is defined
+    - haproxy_ssl != []
+    - haproxy_ssl.enabled|bool
 
 - include_tasks: config_haproxy.yml
   when:

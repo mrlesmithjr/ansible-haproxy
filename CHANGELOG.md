@@ -1,3 +1,12 @@
+commit 3715607f96e4995d8b95c3516a86786061c9b78b
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 14:49:32 2020 -0400
+
+    Fixes required from initial CI tests
+    
+    - default config options
+    - sysctl settings
+
 commit c081f66a57ba6380e08cb22bd43cda19cd9aed8d
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Jul 17 14:21:28 2020 -0400
