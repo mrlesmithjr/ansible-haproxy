@@ -2,13 +2,13 @@
 # defaults file for ansible-haproxy
 
 # Defines password for admin user to login to admin page
-haproxy_admin_password: 'admin'
+haproxy_admin_password: admin
 
 # Defines http port to listen on for admin page
 haproxy_admin_port: 9090
 
 # Defines admin user to login to admin page
-haproxy_admin_user: 'admin'
+haproxy_admin_user: admin
 
 # Defines is HAProxy should be configured
 haproxy_config: false
@@ -33,34 +33,35 @@ haproxy_config: false
 # stickiness - Defines if session cookies should be used for sticky sessions
 #
 # tcp_checks - Define any tcp-check options you desire
-haproxy_configs: []
-  # - name: 'squid-3128'
+haproxy_configs:
+  []
+  # - name: squid-3128
   #   backend_backups: false
-  #   backend_backups_primary: 'node1'
+  #   backend_backups_primary: node1
   #   backend_checks: true
-  #   backend_name: 'squid-servers'
+  #   backend_name: squid-servers
   #   backend_servers_bind_port: 3128
   #   backend_servers:
   #     - 192.168.250.10
   #     - 192.168.250.11
-  #   balance: 'roundrobin'
+  #   balance: roundrobin
   #   default_server_options:
-  #     - name: 'maxconn'
+  #     - name: maxconn
   #       value: 256
-  #     - name: 'maxqueue'
+  #     - name: maxqueue
   #       value: 128
-  #     - name: 'weight'
+  #     - name: weight
   #       value: 100
   #   enabled: true
-  #   frontend_bind_address: '{{ haproxy_lb_vip }}'
+  #   frontend_bind_address: "{{ haproxy_lb_vip }}"
   #   frontend_bind_port: 8080
-  #   frontend_name: 'squid-in'
+  #   frontend_name: squid-in
   #   frontend_ssl: false
-  #   frontend_ssl_cert: "{{ haproxy_load_balancer_ssl['bundled_cert'] }}"
-  #   mode: 'tcp'
+  #   frontend_ssl_cert: "{{ haproxy_ssl['bundled_cert'] }}"
+  #   mode: tcp
   #   options:
-  #     - 'tcplog'
-  #     # - 'httpchk'
+  #     - tcplog
+  #     # - httpchk
   #   stickiness: true
   #   tcp_checks:
   #     - connect
@@ -68,28 +69,28 @@ haproxy_configs: []
 
 # Defines default configurations for default block
 haproxy_defaults:
-  - 'errorfile 400 /etc/haproxy/errors/400.http'
-  - 'errorfile 403 /etc/haproxy/errors/403.http'
-  - 'errorfile 408 /etc/haproxy/errors/408.http'
-  - 'errorfile 500 /etc/haproxy/errors/500.http'
-  - 'errorfile 502 /etc/haproxy/errors/502.http'
-  - 'errorfile 503 /etc/haproxy/errors/503.http'
-  - 'errorfile 504 /etc/haproxy/errors/504.http'
-  - 'log global'
-  - 'maxconn 40000'
-  - 'mode tcp'
-  - 'option dontlognull'
-  - 'option redispatch'
-  - 'option tcp-smart-accept'
-  - 'option tcp-smart-connect'
-  - 'option tcplog'
-  - 'retries 3'
-  - 'timeout client 50000'
-  - 'timeout connect 50000'
-  - 'timeout queue 5000'
-  - 'timeout server 50000'
+  # - errorfile 400 /etc/haproxy/errors/400.http
+  # - errorfile 403 /etc/haproxy/errors/403.http
+  # - errorfile 408 /etc/haproxy/errors/408.http
+  # - errorfile 500 /etc/haproxy/errors/500.http
+  # - errorfile 502 /etc/haproxy/errors/502.http
+  # - errorfile 503 /etc/haproxy/errors/503.http
+  # - errorfile 504 /etc/haproxy/errors/504.http
+  - log global
+  - maxconn 40000
+  - mode tcp
+  - option dontlognull
+  - option redispatch
+  - option tcp-smart-accept
+  - option tcp-smart-connect
+  - option tcplog
+  - retries 3
+  - timeout client 50000
+  - timeout connect 50000
+  - timeout queue 5000
+  - timeout server 50000
 
-haproxy_debian_repo: 'ppa:vbernat/haproxy-{{ haproxy_version }}'
+haproxy_debian_repo: "ppa:vbernat/haproxy-{{ haproxy_version }}"
 
 haproxy_enable_admin_page: true
 
@@ -98,54 +99,64 @@ haproxy_enable_remote_syslog: false
 
 # Defines global settings for global block
 haproxy_global:
-  - 'chroot /var/lib/haproxy'
-  - 'group haproxy'
-  - 'maxconn 40000'
-  - 'spread-checks 3'
-  - 'stats socket {{ haproxy_socket_file }} mode 660 level admin'
-  - 'stats timeout 30s'
-  - 'user haproxy'
-
-# Defines haproxy default location
-haproxy_home: '/etc/haproxy'
-
-haproxy_lb_vip: '{{ ansible_default_ipv4.address }}'
-
-haproxy_pri_domain_name: 'example.org'
-
-haproxy_socket_file: '/var/run/haproxy.sock'
-
-haproxy_syslog_servers: []
-  # - name: 'logstash.{{ haproxy_pri_domain_name }}'
-  #   proto: 'tcp'
-  #   port: 514
+  - chroot /var/lib/haproxy
+  - group haproxy
+  - maxconn 40000
+  - spread-checks 3
+  - "stats socket {{ haproxy_socket_file }} mode 660 level admin"
+  - stats timeout 30s
+  - user haproxy
 
 # Defines if using a highly available setup. i.e. multiple haproxy load balancers
-haproxy_load_balancer_ha: false
+haproxy_ha: false
 
 # Defines the prefix path/file for SSL cert(s) when using HA
 ## We do this in order to generate the keys on the primary and sync the keys to
 ## all other nodes in the HA setup.
-haproxy_load_balancer_ha_key_file_prefix: '/etc/ssl/{{ haproxy_load_balancer_ha_primary }}'
+haproxy_ha_key_file_prefix: "/etc/ssl/{{ haproxy_ha_primary }}"
 
 # Defines the primary host when in HA mode
-haproxy_load_balancer_ha_primary: 'node0'
+haproxy_ha_primary: node0
+
+# Defines haproxy default location
+haproxy_home: /etc/haproxy
+
+haproxy_lb_vip: "{{ ansible_default_ipv4.address }}"
+
+haproxy_pri_domain_name: example.org
+
+haproxy_socket_file: /var/run/haproxy.sock
 
 # Defines SSL cert(s) info
-haproxy_load_balancer_ssl: []
-  # bundled_cert: '/etc/ssl/{{ inventory_hostname }}-bundle.pem'
-  # csr_key_file: '/etc/ssl/{{ inventory_hostname }}-csr.pem'
+haproxy_ssl:
+  []
+  # bundled_cert: "/etc/ssl/{{ inventory_hostname }}-bundle.pem"
+  # csr_key_file: "/etc/ssl/{{ inventory_hostname }}-csr.pem"
   # enabled: false
   # generate_keys: false
-  # private_key_file: '/etc/ssl/private/{{ inventory_hostname }}-key.pem'
+  # private_key_file: "/etc/ssl/private/{{ inventory_hostname }}-key.pem"
   # private_key_size: 4096
-  # private_key_type: 'RSA'
+  # private_key_type: RSA
   # protocols:
-  #   - 'TLSv1'
-  #   - 'TLSv1.1'
-  #   - 'TLSv1.2'
-  # public_key_file: '/etc/ssl/public/{{ inventory_hostname }}-cert.pem'
+  #   - TLSv1
+  #   - TLSv1.1
+  #   - TLSv1.2
+  # public_key_file: "/etc/ssl/public/{{ inventory_hostname }}-cert.pem"
   # public_key_valid_days: 1825
   # regenerate_keys: false
 
-haproxy_version: '1.7'
+# Define any sysctl settings to apply
+haproxy_sysctl_settings:
+  []
+  # - name: net.ipv4.ip_nonlocal_bind
+  #   value: "1"
+  #   state: present
+
+# Define any syslog servers
+haproxy_syslog_servers:
+  []
+  # - name: "logstash.{{ haproxy_pri_domain_name }}"
+  #   proto: tcp
+  #   port: 514
+
+haproxy_version: 2.0

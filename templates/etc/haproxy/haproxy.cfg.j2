@@ -53,7 +53,7 @@ frontend {{ item['frontend_name'] }}-{{ item['frontend_bind_port'] }}
 {%       if item['mode'] is defined %}
     mode {{ item['mode'] }}
 {%       endif %}
-    bind {{ item['frontend_bind_address'] }}:{{ item['frontend_bind_port'] }}{% if item['frontend_ssl']|default(false) %} ssl crt {{ haproxy_load_balancer_ssl['bundled_cert'] }}{% endif %}
+    bind {{ item['frontend_bind_address'] }}:{{ item['frontend_bind_port'] }}{% if item['frontend_ssl']|default(false) %} ssl crt {{ haproxy_ssl['bundled_cert'] }}{% endif %}
 
     default_backend {{ item['backend_name'] }}-{{ item['backend_servers_bind_port'] }}
 
