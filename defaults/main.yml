@@ -35,6 +35,23 @@ haproxy_config: false
 # tcp_checks - Define any tcp-check options you desire
 haproxy_configs:
   []
+  # - name: http-80
+  #   backend_name: http_back
+  #   balance: roundrobin
+  #   enabled: true
+  #   frontend_name: http_front
+  #   frontend_bind_address: "{{ hostvars[inventory_hostname]['ansible_'+bind_interface]['ipv4']['address'] }}"
+  #   frontend_bind_port: 80
+  #   server_template:
+  #     prefix: mywebapp
+  #     range: 10
+  #     fqdn: _web._tcp.service.consul
+  #     resolvers: consul
+  #     params:
+  #       - resolve-opts
+  #       - allow-dup-ip
+  #       - resolve-prefer ipv4
+  #       - check
   # - name: squid-3128
   #   backend_backups: false
   #   backend_backups_primary: node1
