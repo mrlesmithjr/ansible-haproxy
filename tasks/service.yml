@@ -1,0 +1,7 @@
+---
+- name: service | Ensuring HAProxy Service Is Enabled and Started
+  service:
+    name: haproxy
+    state: started
+    enabled: true
+  become: true

@@ -1,6 +1,8 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    haproxy_config: true
   tasks:
     - name: Include ansible-haproxy
       include_role:

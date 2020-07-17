@@ -1,3 +1,9 @@
+commit 969a6a3a830b9629dab7f16f2d32c19a6dea9cfc
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 13:46:53 2020 -0400
+
+    New files from template
+
 commit 13159babc14e765e40a27a593720db524f231919
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Jul 17 13:46:32 2020 -0400
