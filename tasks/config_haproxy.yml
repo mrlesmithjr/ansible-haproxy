@@ -25,7 +25,7 @@
   become: true
   register: haproxy_reconfigured
 
-- name: config_haproxy | restarting haproxy
+- name: config_haproxy | restarting haproxy # noqa 503
   service:
     name: haproxy
     state: restarted

@@ -1,3 +1,11 @@
+commit 788e5781ec6e18f353077de4e725271a8cc67002
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 14:14:22 2020 -0400
+
+    First commit of refactoring of tasks, etc.
+    
+    Will let this run through new CI tests and fix where applicable.
+
 commit 969a6a3a830b9629dab7f16f2d32c19a6dea9cfc
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Jul 17 13:46:53 2020 -0400

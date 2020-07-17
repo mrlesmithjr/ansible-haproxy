@@ -49,13 +49,13 @@
       (haproxy_load_balancer_ha and
         inventory_hostname == haproxy_load_balancer_ha_primary ))
 
-- name: ssl | Generating SSL Public Key
+- name: ssl | Generating SSL Public Key # noqa 503
   command: >
     openssl req
     -x509
     -days {{ haproxy_load_balancer_ssl.public_key_valid_days }}
     -key {{ haproxy_load_balancer_ssl.private_key_file }}
-    -in {{haproxy_load_balancer_ssl.csr_key_file }}
+    -in {{ haproxy_load_balancer_ssl.csr_key_file }}
     -out {{ haproxy_load_balancer_ssl.public_key_file }}
   become: true
   when: >
