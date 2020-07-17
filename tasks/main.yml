@@ -26,10 +26,4 @@
     - haproxy_config is defined
     - haproxy_config|bool
 
-- name: Allowing Running HAProxy Instances To Bind To A VIP For Failover
-  sysctl:
-    name: net.ipv4.ip_nonlocal_bind
-    value: 1
-    state: present
-    reload: yes
-  become: true
+- include_tasks: sysctl.yml

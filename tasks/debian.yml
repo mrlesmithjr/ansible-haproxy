@@ -1,4 +1,14 @@
 ---
+- name: debian | Installing Pre-Reqs
+  apt:
+    name:
+      - gnupg
+      - rsyslog
+    state: present
+  become: true
+  register: result
+  until: result is successful
+
 - name: debian | adding haproxy ppa
   apt_repository:
     repo: "{{ haproxy_debian_repo }}"

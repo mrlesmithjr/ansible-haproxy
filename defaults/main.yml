@@ -69,13 +69,13 @@ haproxy_configs:
 
 # Defines default configurations for default block
 haproxy_defaults:
-  - errorfile 400 /etc/haproxy/errors/400.http
-  - errorfile 403 /etc/haproxy/errors/403.http
-  - errorfile 408 /etc/haproxy/errors/408.http
-  - errorfile 500 /etc/haproxy/errors/500.http
-  - errorfile 502 /etc/haproxy/errors/502.http
-  - errorfile 503 /etc/haproxy/errors/503.http
-  - errorfile 504 /etc/haproxy/errors/504.http
+  # - errorfile 400 /etc/haproxy/errors/400.http
+  # - errorfile 403 /etc/haproxy/errors/403.http
+  # - errorfile 408 /etc/haproxy/errors/408.http
+  # - errorfile 500 /etc/haproxy/errors/500.http
+  # - errorfile 502 /etc/haproxy/errors/502.http
+  # - errorfile 503 /etc/haproxy/errors/503.http
+  # - errorfile 504 /etc/haproxy/errors/504.http
   - log global
   - maxconn 40000
   - mode tcp
@@ -121,6 +121,13 @@ haproxy_syslog_servers:
   # - name: "logstash.{{ haproxy_pri_domain_name }}"
   #   proto: tcp
   #   port: 514
+
+# Define any sysctl settings to apply
+haproxy_sysctl_settings:
+  []
+  # - name: net.ipv4.ip_nonlocal_bind
+  #   value: "1"
+  #   state: present
 
 # Defines if using a highly available setup. i.e. multiple haproxy load balancers
 haproxy_load_balancer_ha: false

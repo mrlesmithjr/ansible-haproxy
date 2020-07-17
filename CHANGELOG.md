@@ -1,3 +1,9 @@
+commit c081f66a57ba6380e08cb22bd43cda19cd9aed8d
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 14:21:28 2020 -0400
+
+    First shot at fixing linting issues
+
 commit 788e5781ec6e18f353077de4e725271a8cc67002
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Jul 17 14:14:22 2020 -0400

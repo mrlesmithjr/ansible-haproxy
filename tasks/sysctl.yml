@@ -1,0 +1,9 @@
+---
+- name: Sysctl | Managing sysctl Settings
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: "{{ item.state }}"
+    reload: true
+  become: true
+  loop: "{{ haproxy_sysctl_settings }}"
