@@ -9,8 +9,6 @@
 - include_tasks: opensuse.yml
   when: ansible_os_family == "openSUSE Leap"
 
-- include_tasks: service.yml
-
 - name: Debug HAProxy SSL
   debug:
     var: haproxy_ssl
@@ -25,5 +23,7 @@
   when:
     - haproxy_config is defined
     - haproxy_config|bool
+
+- include_tasks: service.yml
 
 - include_tasks: sysctl.yml
