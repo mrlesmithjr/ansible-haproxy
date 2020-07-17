@@ -1,3 +1,9 @@
+commit d4621f8d4a44aecb38a463e23e850837c8cd2303
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 14:54:40 2020 -0400
+
+    changed vars including haproxy_load_balancer to haproxy_
+
 commit 3715607f96e4995d8b95c3516a86786061c9b78b
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Jul 17 14:49:32 2020 -0400
