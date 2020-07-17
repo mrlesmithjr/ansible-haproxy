@@ -1,3 +1,19 @@
+commit 928377cf078a129d326e310d72f0d68d84cb0a48
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 19:16:36 2020 -0400
+
+    Moved service tasks further down
+    
+    In case a bad config is in place, the service will not start.
+
+commit 8c07266735e45aed9714ee5d8c6d3fdcef94fb19
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 14:58:50 2020 -0400
+
+    Disabled hatop package for Debian
+    
+    It is no longer available for Ubuntu2004 and not sure this was even used much
+
 commit d4621f8d4a44aecb38a463e23e850837c8cd2303
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Jul 17 14:54:40 2020 -0400

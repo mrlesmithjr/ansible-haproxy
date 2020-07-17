@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed|comment }}
 
 global
 {% if (haproxy_enable_remote_syslog is defined and not haproxy_enable_remote_syslog) or haproxy_enable_remote_syslog is not defined %}
@@ -8,7 +8,7 @@ global
 {% if (haproxy_enable_remote_syslog is defined and haproxy_enable_remote_syslog) and haproxy_syslog_servers is defined %}
     # Remote syslog servers
 {%   for item in haproxy_syslog_servers %}
-    log {{ item['name'] }}:{{ item['port'] }} local0
+    log {{ item.name }}:{{ item.port }} local0
 {%   endfor %}
     #log-send-hostname
 {% endif %}
@@ -48,64 +48,91 @@ listen stats
 
 {% if haproxy_configs is defined and haproxy_configs != 'None' %}
 {%   for item in haproxy_configs %}
-{%     if item['enabled'] %}
-frontend {{ item['frontend_name'] }}-{{ item['frontend_bind_port'] }}
-{%       if item['mode'] is defined %}
-    mode {{ item['mode'] }}
+{%     if item.enabled|bool %}
+frontend {{ item.frontend_name }}-{{ item.frontend_bind_port }}
+{%       if item.mode is defined %}
+    mode {{ item.mode }}
 {%       endif %}
-    bind {{ item['frontend_bind_address'] }}:{{ item['frontend_bind_port'] }}{% if item['frontend_ssl']|default(false) %} ssl crt {{ haproxy_ssl['bundled_cert'] }}{% endif %}
+    bind {{ item.frontend_bind_address }}:{{ item.frontend_bind_port }}{% if item.frontend_ssl|default(false) %} ssl crt {{ haproxy_ssl.bundled_cert }}{% endif %}
 
-    default_backend {{ item['backend_name'] }}-{{ item['backend_servers_bind_port'] }}
+{%       if item.backend_servers_bind_port is defined %}
+    default_backend {{ item.backend_name }}-{{ item.backend_servers_bind_port }}
+{%       else %}
+    default_backend {{ item.backend_name }}
+{%       endif %}
 
 {%     endif %}
 {%   endfor %}
 {%   for item in haproxy_configs %}
-{%     if item['enabled'] %}
-backend {{ item['backend_name'] }}-{{ item['backend_servers_bind_port'] }}
-{%       if item['mode'] is defined %}
-    mode {{ item['mode'] }}
+{%     if item.enabled|bool %}
+{%       if item.backend_servers_bind_port is defined %}
+backend {{ item.backend_name }}-{{ item.backend_servers_bind_port }}
+{%       else %}
+backend {{ item.backend_name }}
 {%       endif %}
-{%       if item['balance'] is defined %}
-    balance {{ item['balance'] }}
+
+{%       if item.mode is defined %}
+    mode {{ item.mode }}
 {%       endif %}
-{%       if item['stickiness'] is defined and item['stickiness'] %}
+{%       if item.balance is defined %}
+    balance {{ item.balance }}
+{%       endif %}
+{%       if item.server_template is defined %}
+    server-template {{ item.server_template.prefix+' '+item.server_template.range|string+' '+item.server_template.fqdn+' '+'resolvers '+item.server_template.resolvers+' '+item.server_template.params|join(' ') }}
+{%       endif %}
+{%       if item.stickiness is defined and item.stickiness %}
     cookie HA_BACKEND_ID insert indirect nocache
 {%       endif %}
-{%       if item['options'] is defined %}
-{%         for option in item['options'] %}
+{%       if item.options is defined %}
+{%         for option in item.options %}
     option {{ option }}
 {%         endfor %}
 {%       endif %}
-{%       if item['tcp_checks'] is defined %}
-{%         for tcp_check in item['tcp_checks'] %}
+{%       if item.tcp_checks is defined %}
+{%         for tcp_check in item.tcp_checks %}
     tcp-check {{ tcp_check }}
 {%         endfor %}
 {%       endif %}
-{%       if item['default_server_options'] is defined %}
-    default-server{% for bo in item['default_server_options'] %} {{ bo['name'] }} {{ bo['value'] }}{% endfor %}
+{%       if item.default_server_options is defined %}
+    default-server{% for bo in item.default_server_options %} {{ bo.name }} {{ bo.value }}{% endfor %}
 
 {%       endif %}
-{%       for server in item['backend_servers'] %}
-{%         if (item['backend_backups'] is defined and not item['backend_backups']) or item['backend_backups'] is not defined %}
-    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}
-    {%- if item['backend_checks'] %} check{% endif %}
-    {%- if item['stickiness'] is defined and item['stickiness'] %} cookie {{ loop.index }}{% endif %}
+{%       if item.backend_servers is defined %}
+{%         for server in item.backend_servers %}
+{%           if (item.backend_backups is defined and not item.backend_backups) or item.backend_backups is not defined %}
+    server {{ server }} {{ server }}:{{ item.backend_servers_bind_port }}
+    {%- if item.backend_checks %} check{% endif %}
+    {%- if item.stickiness is defined and item.stickiness %} cookie {{ loop.index }}{% endif %}
 
-{%         elif item['backend_backups'] %}
-{%           if item['backend_backups_primary'] == server %}
-    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }}
-    {%- if item['backend_checks'] %} check{% endif %}
-    {%- if item['stickiness'] is defined and item['stickiness'] %} cookie {{ loop.index }}{% endif %}
+{%           elif item.backend_backups %}
+{%             if item.backend_backups_primary == server %}
+    server {{ server }} {{ server }}:{{ item.backend_servers_bind_port }}
+    {%- if item.backend_checks %} check{% endif %}
+    {%- if item.stickiness is defined and item.stickiness %} cookie {{ loop.index }}{% endif %}
 
-{%           elif item['backend_backups_primary'] != server %}
-    server {{ server }} {{ server }}:{{ item['backend_servers_bind_port'] }} backup
-    {%- if item['backend_checks'] %} check{% endif %}
-    {%- if item['stickiness'] is defined and item['stickiness'] %} cookie {{ loop.index }}{% endif %}
+{%             elif item.backend_backups_primary != server %}
+    server {{ server }} {{ server }}:{{ item.backend_servers_bind_port }} backup
+    {%- if item.backend_checks %} check{% endif %}
+    {%- if item.stickiness is defined and item.stickiness %} cookie {{ loop.index }}{% endif %}
 
+{%             endif %}
 {%           endif %}
-{%         endif %}
-{%       endfor %}
+{%         endfor %}
+{%       endif %}
 
+{%     endif %}
+{%   endfor %}
+{% endif %}
+{% if haproxy_resolvers is defined %}
+{%   for resolver in haproxy_resolvers %}
+resolvers {{ resolver.name }}
+{%     for nameserver in resolver.nameservers %}
+  nameserver {{ nameserver.name }} {{ nameserver.ip }}:{{ nameserver.port|default(53) }}
+{%     endfor %}
+{%     if resolver.options is defined %}
+{%       for option in resolver.options %}
+  {{ option }}
+{%       endfor %}
 {%     endif %}
 {%   endfor %}
 {% endif %}
