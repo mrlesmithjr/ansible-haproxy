@@ -1,3 +1,18 @@
+commit cbba942125babccaac1c310d12a51f97df396781
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 21:55:47 2020 -0400
+
+    Added missing example of resolvers
+
+commit 5c1b96965c65e43e315b0ec94c9644c12b9324e5
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Jul 17 19:19:46 2020 -0400
+
+    Added server-template functionality, etc.
+    
+    Added the ability to define server-templates for Consul integration, etc.
+    Also cleaned up config template a bit.
+
 commit 928377cf078a129d326e310d72f0d68d84cb0a48
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Jul 17 19:16:36 2020 -0400
