@@ -142,6 +142,20 @@ haproxy_lb_vip: "{{ ansible_default_ipv4.address }}"
 
 haproxy_pri_domain_name: example.org
 
+# Define HAProxy resolvers to use for server-templates
+haproxy_resolvers:
+  []
+  # - name: consul
+  #   nameservers: |
+  #     {% set nameservers = [] %}
+  #     {% for host in groups['consul_servers'] %}
+  #     {%   set _ = nameservers.append({'name': host, 'ip': hostvars[host]['ansible_' + consul_bind_interface]['ipv4']['address'], 'port': 8600}) %}
+  #     {% endfor %}
+  #     {{ nameservers }}
+  #   options:
+  #     - accepted_payload_size 8192
+  #     - hold valid 5s
+
 haproxy_socket_file: /var/run/haproxy.sock
 
 # Defines SSL cert(s) info
