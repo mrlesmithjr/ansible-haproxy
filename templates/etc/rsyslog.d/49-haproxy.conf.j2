@@ -7,6 +7,9 @@ $AddUnixListenSocket /var/lib/haproxy/dev/log
 {% if (haproxy_enable_remote_syslog is defined and not haproxy_enable_remote_syslog) or haproxy_enable_remote_syslog is not defined %}
 if $programname startswith 'haproxy' then /var/log/haproxy.log
 {% endif %}
+
+$FileCreateMode {{ haproxy_log_file_perms }}
+
 {% if (haproxy_enable_remote_syslog is defined and haproxy_enable_remote_syslog) %}
 #if $programname startswith 'haproxy' then /var/log/haproxy.log
 {% endif %}

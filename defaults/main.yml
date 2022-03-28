@@ -140,6 +140,9 @@ haproxy_home: /etc/haproxy
 
 haproxy_lb_vip: "{{ ansible_default_ipv4.address }}"
 
+# permission for file haproxy.log
+haproxy_log_file_perms: 0640
+
 haproxy_pri_domain_name: example.org
 
 # Define HAProxy resolvers to use for server-templates
