@@ -1,6 +1,6 @@
 ---
 - name: ssl | Installing Python Modules
-  pip:
+  ansible.builtin.pip:
     name:
       - pyOpenSSL
     state: present
@@ -10,9 +10,10 @@
   when: haproxy_ssl.generate_keys|bool
 
 - name: ssl | Ensuring SSL Keys Folders Exist
-  file:
-    path: "{{ item|dirname }}"
+  ansible.builtin.file:
+    path: "{{ item | dirname }}"
     state: directory
+    mode: u=rwx,g=rx,o=rx
   become: true
   loop:
     - "{{ haproxy_ssl.private_key_file }}"
@@ -20,7 +21,7 @@
   when: haproxy_ssl.generate_keys|bool
 
 - name: ssl | Generating SSL Private Key
-  openssl_privatekey:
+  community.crypto.openssl_privatekey:
     force: "{{ haproxy_ssl.regenerate_keys }}"
     path: "{{ haproxy_ssl.private_key_file }}"
     size: "{{ haproxy_ssl.private_key_size }}"
@@ -37,7 +38,7 @@
 # This module is included in Ansible 2.4 so for now it is included in library/
 - name: ssl | Generating SSL CSR
   openssl_csr:
-    force: "{{ haproxy_ssl.regenerate_keys|bool }}"
+    force: "{{ haproxy_ssl.regenerate_keys | bool }}"
     commonName: "{{ inventory_hostname }}"
     path: "{{ haproxy_ssl.csr_key_file }}"
     privatekey_path: "{{ haproxy_ssl.private_key_file }}"
@@ -49,8 +50,8 @@
       (haproxy_ha and
         inventory_hostname == haproxy_ha_primary ))
 
-- name: ssl | Generating SSL Public Key # noqa 503
-  command: >
+- name: ssl | Generating SSL Public Key # noqa no-handler no-changed-when
+  ansible.builtin.command: >
     openssl req
     -x509
     -days {{ haproxy_ssl.public_key_valid_days }}
@@ -69,7 +70,7 @@
 # We capture the ha primary private key in order to sync to all other load
 # balancers. This will ensure that all load balancers use the same key for SSL.
 - name: ssl | Capturing Private SSL Key On Primary
-  slurp:
+  ansible.builtin.slurp:
     src: "{{ haproxy_ssl.private_key_file }}"
   become: true
   register: _haproxy_ssl_priv_key_
@@ -82,7 +83,7 @@
 # We capture the ha primary public key in order to sync to all other load
 # balancers. This will ensure that all load balancers use the same key for SSL.
 - name: ssl | Capturing Public SSL Key On Primary
-  slurp:
+  ansible.builtin.slurp:
     src: "{{ haproxy_ssl.public_key_file }}"
   become: true
   register: _haproxy_ssl_pub_key_
@@ -93,9 +94,10 @@
         not haproxy_ha)
 
 - name: ssl | Creating Primary SSL Bundle
-  template:
+  ansible.builtin.template:
     src: bundle.j2
     dest: "{{ haproxy_ssl.bundled_cert }}"
+    mode: u=rw,g=r,o=r
   become: true
   when: >
     haproxy_ssl.generate_keys|bool and
@@ -106,9 +108,10 @@
 # We now sync the ha primary private key to all load balancers. This will ensure
 # that all load balancers are configured to use the same key for SSL.
 - name: ssl | Syncing Primary SSL Private Key
-  template:
+  ansible.builtin.template:
     src: key.j2
     dest: "{{ haproxy_ha_key_file_prefix }}-key.pem"
+    mode: u=rw,g=r,o=r
   become: true
   when:
     - haproxy_ssl.generate_keys|bool
@@ -117,9 +120,10 @@
 # We now sync the ha primary public key to all load balancers. This will ensure
 # that all load balancers are configured to use the same key for SSL.
 - name: ssl | Syncing Primary SSL Public Key
-  template:
+  ansible.builtin.template:
     src: cert.j2
     dest: "{{ haproxy_ha_key_file_prefix }}-cert.pem"
+    mode: u=rw,g=r,o=r
   become: true
   when:
     - haproxy_ssl.generate_keys|bool
@@ -128,9 +132,10 @@
 # We now sync the ha primary bundle to all load balancers. This will ensure
 # that all load balancers are configured to use the same SSL bundled keys.
 - name: ssl | Syncing Primary SSL Bundle
-  template:
+  ansible.builtin.template:
     src: bundle.j2
     dest: "{{ haproxy_ssl.bundled_cert }}"
+    mode: u=rw,g=r,o=r
   become: true
   when:
     - haproxy_ssl.generate_keys|bool

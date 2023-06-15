@@ -1,6 +1,6 @@
 ---
 - name: debian | Installing Pre-Reqs
-  apt:
+  ansible.builtin.apt:
     name:
       - gnupg
       - rsyslog
@@ -10,14 +10,14 @@
   until: result is successful
 
 - name: debian | adding haproxy ppa
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ haproxy_debian_repo }}"
     state: present
   become: true
   when: ansible_distribution == "Ubuntu"
 
 - name: debian | installing haproxy and socat
-  apt:
+  ansible.builtin.apt:
     name:
       - haproxy
       # - hatop

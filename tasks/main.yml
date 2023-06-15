@@ -1,29 +1,36 @@
 ---
 # tasks file for ansible-haproxy
-- include_tasks: debian.yml
+- name: Debian specific tasks
+  ansible.builtin.include_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
-- include_tasks: redhat.yml
+- name: RHEL specific tasks
+  ansible.builtin.include_tasks: redhat.yml
   when: ansible_os_family == "RedHat"
 
-- include_tasks: opensuse.yml
+- name: OpenSUSE specific tasks
+  ansible.builtin.include_tasks: opensuse.yml
   when: ansible_os_family == "openSUSE Leap"
 
 - name: Debug HAProxy SSL
-  debug:
+  ansible.builtin.debug:
     var: haproxy_ssl
 
-- include_tasks: ssl.yml
+- name: Manage SSL
+  ansible.builtin.include_tasks: ssl.yml
   when:
     - haproxy_ssl is defined
     - haproxy_ssl != []
     - haproxy_ssl.enabled|bool
 
-- include_tasks: config_haproxy.yml
+- name: Configure HAProxy
+  ansible.builtin.include_tasks: config_haproxy.yml
   when:
     - haproxy_config is defined
     - haproxy_config|bool
 
-- include_tasks: service.yml
+- name: Manage services
+  ansible.builtin.include_tasks: service.yml
 
-- include_tasks: sysctl.yml
+- name: Manage system settings
+  ansible.builtin.include_tasks: sysctl.yml

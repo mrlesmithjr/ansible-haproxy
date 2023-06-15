@@ -5,5 +5,5 @@
     haproxy_config: true
   tasks:
     - name: Include ansible-haproxy
-      include_role:
+      ansible.builtin.include_role:
         name: ansible-haproxy

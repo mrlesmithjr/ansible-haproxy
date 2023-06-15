@@ -1,14 +1,14 @@
 ---
 # handlers file for ansible-haproxy
 - name: restart haproxy
-  service:
+  ansible.builtin.service:
     name: haproxy
     state: restarted
   become: true
   when: not ansible_check_mode
 
 - name: restart rsyslog
-  service:
+  ansible.builtin.service:
     name: rsyslog
     state: restarted
   become: true

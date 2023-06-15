@@ -1,6 +1,6 @@
 ---
 - name: opensuse | installing haproxy and socat
-  zypper:
+  community.general.packaging.os.zypper:
     name:
       - haproxy
       - hatop

@@ -1,6 +1,6 @@
 ---
 - name: redhat | installing haproxy and socat
-  package:
+  ansible.builtin.package:
     name:
       - haproxy
       # - hatop
