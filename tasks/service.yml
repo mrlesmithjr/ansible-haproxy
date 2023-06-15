@@ -1,6 +1,6 @@
 ---
 - name: service | Ensuring HAProxy Service Is Enabled and Started
-  service:
+  ansible.builtin.service:
     name: haproxy
     state: started
     enabled: true
