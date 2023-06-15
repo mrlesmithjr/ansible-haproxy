@@ -16,13 +16,13 @@ ansible-core = ">=2.13.6,<2.14.0"
 
 [[package]]
 name = "ansible-compat"
-version = "4.1.2"
+version = "3.0.2"
 description = "Ansible compatibility goodies"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.8"
 files = [
-    {file = "ansible-compat-4.1.2.tar.gz", hash = "sha256:696162dbc1223c0b474136a61662b3fe44115d490de8da606b149cee572b01ed"},
-    {file = "ansible_compat-4.1.2-py3-none-any.whl", hash = "sha256:67f84619b63239383e56eb6725f4617c10569da120b8e78e61ccf779c63afea5"},
+    {file = "ansible-compat-3.0.2.tar.gz", hash = "sha256:a10ea191f9efe08590ff64cb46a31af1f8142c08618db1a4bc827ed257c68230"},
+    {file = "ansible_compat-3.0.2-py3-none-any.whl", hash = "sha256:1c051fb7cedd7a067c5b8fca86e76109bff69cdd31115dea751e3166296a73da"},
 ]
 
 [package.dependencies]
@@ -31,7 +31,6 @@ jsonschema = ">=4.6.0"
 packaging = "*"
 PyYAML = "*"
 subprocess-tee = ">=0.4.1"
-typing-extensions = {version = ">=4.5.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
 docs = ["argparse-manpage", "black", "mkdocs-ansible[lock] (>=0.1.2)"]
@@ -1594,4 +1593,4 @@ dev = ["doc8", "flake8", "flake8-import-order", "rstcheck[sphinx]", "sphinx"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4.0"
-content-hash = "827de23f6d8c74acb2f044a5ec345d75e8442adad07ea6d7b09483d47386f800"
+content-hash = "0cc05d74853ca5e06fa0cc391f1cd44146bec3b276d3894a5fa2ad887537f134"

@@ -9,6 +9,7 @@ readme = "README.md"
 python = ">=3.9,<4.0"
 ansible = "6.6.0"
 chardet = "^5.1.0"
+ansible-compat = "3.0.2"
 
 [tool.poetry.group.dev.dependencies]
 ansible-lint = "6.8.7"
