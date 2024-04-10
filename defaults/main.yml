@@ -191,3 +191,7 @@ haproxy_syslog_servers:
   #   port: 514
 
 haproxy_version: 2.0
+
+# permission for file haproxy.log written by rsyslog
+# must be quoted
+haproxy_log_file_perms: '0640'
